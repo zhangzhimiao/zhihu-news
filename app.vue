@@ -113,6 +113,7 @@
         mounted(){
             var _this = this;
             _this.getThemes();
+            //true说明需要请求两天的数据
             _this.getRecommendList(true);
             const $list = this.$refs.list;
             $list.addEventListener('scroll', () => {
