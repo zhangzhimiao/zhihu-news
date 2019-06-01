@@ -68,15 +68,11 @@
                     });
                 });
             },
-            handleToRecommend(judge){
+            handleToRecommend(){
                 this.type = 'recommend';
                 this.recommendList = [];
                 this.dailyTime = $.getTodayTime();
-                this.getRecommendList(false);
-                if(judge){
-                    this.dailyTime -= 86400000;
-                    this.getRecommendList(false);
-                }
+                this.getRecommendList();
             },
             getRecommendList(needMore){
                 var _this = this;
