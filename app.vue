@@ -74,17 +74,17 @@
                 this.dailyTime = $.getTodayTime();
                 this.getRecommendList();
             },
-            getRecommendList(needMore){
+            async getRecommendList(needMore){
                 var _this = this;
                 this.isLoading = true;
                 const prevDay = $.prevDay(this.dailyTime + 86400000);
-                $.ajax.get('news/before/' + prevDay).then(res => {
+                await $.ajax.get('news/before/' + prevDay).then(res => {
                     this.recommendList.push(res);
                     this.isLoading = false;
-                    if(needMore){
-                        _this.dailyTime -= 86400000;
-                        _this.getRecommendList(false);
-                    }
+                    // if(needMore){
+                    //     _this.dailyTime -= 86400000;
+                    //     _this.getRecommendList(false);
+                    // }
                 });
             },
             getLatestList(){
@@ -104,13 +104,20 @@
                     day = day.substr(1,1);
                 return `${month} 月 ${day} 日`;
                 
+            },
+            async init(){
+                await this.getThemes();
+                await this.getRecommendList(true);
+                this.dailyTime -= 86400000;
+                this.getRecommendList(false);
             }
         },
         mounted(){
             var _this = this;
-            _this.getThemes();
+            this.init();
+            // _this.getThemes();
             //true说明需要请求两天的数据
-            _this.getRecommendList(true);
+            // _this.getRecommendList(true);
             const $list = this.$refs.list;
             $list.addEventListener('scroll', () => {
                 if(this.type == 'daily' || this.isLoading) 
